@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mvvm:ViewBase xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             xmlns:controls="clr-namespace:mobile.Controls"
+             xmlns:mvvm="clr-namespace:TinyMvvm.Forms;assembly=TinyMvvm.Forms"
+             xmlns:vm="clr-namespace:mobile.ViewModels"
+             x:Class="mobile.Views.LoginPage"
+             x:TypeArguments="vm:LoginPageViewModel"
+             Style="{StaticResource Page}"
+             NavigationPage.HasNavigationBar="False">
+    <Grid>
+        <ScrollView>
+            <Grid RowDefinitions="1*, 1*">
+                <StackLayout Padding="30, 80, 30, 0">
+                    <Label Text="Facemark" Style="{StaticResource HeaderText}"/>
+                </StackLayout>
+
+                <yummy:PancakeView Grid.Row="0" Grid.RowSpan="2" Style="{StaticResource LoginCard}">
+                    <StackLayout Spacing="0">
+                        <Label Text="Please Login" Style="{StaticResource Title1}"/>
+                        <StackLayout Spacing="20">
+
+                            <yummy:PancakeView Style="{StaticResource EntryCard}">
+                                <StackLayout Orientation="Horizontal" Spacing="10">
+                                    <Label Text="&#xf0e0;" Style="{StaticResource EntryIcon}"/>
+                                    <controls:BorderlessEntry Text="{Binding Email}" Placeholder="enter email ..." Keyboard="Email"/>
+                                </StackLayout>
+                            </yummy:PancakeView>
+
+                            <yummy:PancakeView Style="{StaticResource EntryCard}">
+                                <StackLayout Orientation="Horizontal" Spacing="10">
+                                    <Label Text="&#xf13e;" Style="{StaticResource EntryIcon}"/>
+                                    <controls:BorderlessEntry Text="{Binding Password}" Placeholder="enter password ..." IsPassword="True"/>
+                                </StackLayout>
+                            </yummy:PancakeView>
+
+                            <StackLayout Orientation="Horizontal" Margin="30, 0">
+                                <Label Style="{StaticResource ButtonLabel}" Text="Can't login" HorizontalOptions="StartAndExpand"/>
+                                <Label Style="{StaticResource ButtonLabel}" Text="Register" HorizontalOptions="EndAndExpand">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding RegisterCommand}"/>
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </StackLayout>
+                        </StackLayout>
+                        <Button Command="{Binding LoginCommand}" Text="Login" Style="{StaticResource ActionButton}"/>
+                    </StackLayout>
+                </yummy:PancakeView>
+            </Grid>
+        </ScrollView>
+    </Grid>
+
+</mvvm:ViewBase>

@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="mobile.Views.RegisterPage"
+             xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             xmlns:controls="clr-namespace:mobile.Controls">
+    <ScrollView>
+        <Grid>
+            <Grid RowDefinitions="1*,1*"/>
+            <StackLayout Padding="30,80,30,0">
+                <Label Text="Facemark" Style="{StaticResource HeaderText}"/>
+            </StackLayout>
+            <yummy:PancakeView Grid.Row="0" Grid.RowSpan="2" Style="{StaticResource LoginCard}">
+                <StackLayout Spacing="0">
+                    <Label Text="Please Register" Style="{StaticResource Title1}"/>
+                    <StackLayout Spacing="15">
+
+                        <yummy:PancakeView Style="{StaticResource EntryCard}">
+                            <StackLayout Orientation="Horizontal" Spacing="10">
+                                <Label Text="&#xf5b7;" Style="{StaticResource EntryIcon}"/>
+                                <controls:BorderlessEntry Placeholder="enter full name..." Keyboard="Text"/>
+                            </StackLayout>
+                        </yummy:PancakeView>
+
+                        <yummy:PancakeView Style="{StaticResource EntryCard}">
+                            <StackLayout Orientation="Horizontal" Spacing="10">
+                                <Label Text="&#xf0e0;" Style="{StaticResource EntryIcon}"/>
+                                <controls:BorderlessEntry Placeholder="enter email..." Keyboard="Email"/>
+                            </StackLayout>
+                        </yummy:PancakeView>
+
+                        <yummy:PancakeView Style="{StaticResource EntryCard}">
+                            <StackLayout Orientation="Horizontal" Spacing="10">
+                                <Label Text="&#xf13e;" Style="{StaticResource EntryIcon}"/>
+                                <controls:BorderlessEntry Placeholder="enter password..." IsPassword="True"/>
+                            </StackLayout>
+                        </yummy:PancakeView>
+
+                        <StackLayout Orientation="Horizontal" Margin="30,0">
+                            <Button Text="Login" Style="{StaticResource ButtonLabel}" HorizontalOptions="EndAndExpand"/>
+                        </StackLayout>
+                    </StackLayout>
+                    <Button Text="Register" Style="{StaticResource ActionButton}"/>
+                </StackLayout>
+            </yummy:PancakeView>
+        </Grid>
+    </ScrollView>
+</ContentPage>

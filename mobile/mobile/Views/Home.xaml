@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="mobile.Views.Home"
+             xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView">
+    <ScrollView>
+        <StackLayout>
+            <StackLayout Orientation="Horizontal" Margin="30,50">
+                <Label Text="Home" Style="{StaticResource HeaderText}"/>
+                <Button WidthRequest="50" HeightRequest="50" HorizontalOptions="EndAndExpand">
+                    <Button.ImageSource>
+                        <FontImageSource FontFamily="fas" Size="48" Glyph="&#xf067;"/>
+                    </Button.ImageSource>
+                </Button>
+            </StackLayout>
+            <yummy:PancakeView HorizontalOptions="FillAndExpand" HeightRequest="300" Style="{StaticResource LoginCard}">
+
+            </yummy:PancakeView>
+            <yummy:PancakeView HorizontalOptions="FillAndExpand" Style="{StaticResource HistoryRevealCard}">
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="History" Style="{StaticResource Title1}"/>
+                    <Button Text="&#xf078;"/>
+                </StackLayout>
+            </yummy:PancakeView>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>
