@@ -1,11 +1,4 @@
-﻿using System.Reflection;
-using Autofac;
-using mobile.Views;
-using TinyMvvm;
-using TinyMvvm.Autofac;
-using TinyMvvm.IoC;
-using TinyNavigationHelper;
-using TinyNavigationHelper.Forms;
+﻿using mobile.Views;
 using Xamarin.Forms;
 
 namespace mobile
@@ -16,32 +9,19 @@ namespace mobile
         {
             InitializeComponent();
 
-            InitializeTiny();
+            Device.SetFlags(new string[] { "Expander_Experimental" });
 
-            MainPage = new NavigationPage(new LoginPage());
-        }
+            Startup.Init();
 
-        private void InitializeTiny()
-        {
-            var navigationHelper = new FormsNavigationHelper();
-
-            var currentAssembly = Assembly.GetExecutingAssembly();
-            navigationHelper.RegisterViewsInAssembly(currentAssembly);
-
-            var containerBuilder = new ContainerBuilder();
-
-            containerBuilder.RegisterInstance<INavigationHelper>(navigationHelper);
-
-            var appAssembly = typeof(App).GetTypeInfo().Assembly;
-            containerBuilder.RegisterAssemblyTypes(appAssembly)
-                   .Where(x => x.IsSubclassOf(typeof(Page)));
-
-            containerBuilder.RegisterAssemblyTypes(appAssembly)
-                   .Where(x => x.IsSubclassOf(typeof(ViewModelBase)));
-
-            var container = containerBuilder.Build();
-
-            Resolver.SetResolver(new AutofacResolver(container));
+            if (Current.Properties.ContainsKey("logged-in") && (bool)Current.Properties["logged-in"])
+            {
+                MainPage = new NavigationPage(new Home());
+            }
+            else
+            {
+                Current.Properties["logged-in"] = false;
+                MainPage = new NavigationPage(new LoginPage());
+            }
         }
 
         protected override void OnStart()

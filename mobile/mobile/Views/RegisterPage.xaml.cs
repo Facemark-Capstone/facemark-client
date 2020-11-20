@@ -12,5 +12,10 @@ namespace mobile.Views
         {
             InitializeComponent();
         }
+
+        async void NavigateBackToLogin(System.Object sender, System.EventArgs e)
+        {
+            await Navigation.PushAsync(new LoginPage());
+        }
     }
 }

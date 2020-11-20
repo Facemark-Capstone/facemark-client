@@ -5,8 +5,22 @@ using System.Text.RegularExpressions;
 
 namespace shared.Utilities
 {
-    public class RegexUtilities
+    public static class RegexUtilities
     {
+        public static bool IsValidPassword(string password)
+        {
+            try
+            {
+                return Regex.IsMatch(password,
+                    @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,15}$",
+                    RegexOptions.None, TimeSpan.FromMilliseconds(250));
+            }
+            catch (RegexMatchTimeoutException)
+            {
+                return false;
+            }
+        }
+
         public static bool IsValidEmail(string email)
         {
             if (string.IsNullOrWhiteSpace(email))
@@ -30,11 +44,11 @@ namespace shared.Utilities
                     return match.Groups[1].Value + domainName;
                 }
             }
-            catch (RegexMatchTimeoutException e)
+            catch (RegexMatchTimeoutException)
             {
                 return false;
             }
-            catch (ArgumentException e)
+            catch (ArgumentException)
             {
                 return false;
             }
