@@ -1,0 +1,64 @@
+@host = https://david.local
+@port = 5001
+@baseUrl = {{host}}:{{port}}/api
+@registerUrl = {{baseUrl}}/account/register
+@loginUrl = {{baseUrl}}/account/login
+@usersUrls = {{baseUrl}}/account/users
+
+@analyzeUrl = {{baseUrl}}/analysis
+
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJkYXZpZDZAZ2x1d2EuY29tIiwicm9sZSI6IkNsaWVudCIsIm5iZiI6MTYwNTUzOTM0MiwiZXhwIjoxNjA2MTQ0MTQyLCJpYXQiOjE2MDU1MzkzNDIsImlzcyI6Imh0dHBzOi8vYXBpLmZhY2VtYXJrLmNvbSIsImF1ZCI6Imh0dHBzOi8vZmFjZW1hcmsuY29tIn0.c93hrKzPSbKjbFq9jwAIBT29V0frQXjiEmr-YkiFwDY
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJkYXZpZDdAZ2x1d2EuY29tIiwicm9sZSI6IkFkbWluIiwibmJmIjoxNjA1NTQwMjc1LCJleHAiOjE2MDYxNDUwNzUsImlhdCI6MTYwNTU0MDI3NSwiaXNzIjoiaHR0cHM6Ly9hcGkuZmFjZW1hcmsuY29tIiwiYXVkIjoiaHR0cHM6Ly9mYWNlbWFyay5jb20ifQ._MLW9NZJ5SbeQ5smM4wMXarOoIeFgFQZ5gV89QouUCU
+
+
+POST {{registerUrl}} HTTP/1.1
+Content-Type: application/json
+
+{
+    "FullName": "David Wahid",
+    "Email": "david.wahid@gluwa.com",
+    "Role": 2,
+    "PasswordEncrypted": "kg0Vt_2MPtLfmsBBvnY9lkDFEAEcsu07U-bIx6Vxdxk"
+}
+
+###
+POST {{loginUrl}} HTTP/1.1
+Content-Type: application/json
+
+{
+    "Email": "david.wahid@gluwa.com",
+    "PasswordEncrypted": "kg0Vt_2MPtLfmsBBvnY9lkDFEAEcsu07U-bIx6Vxdxk"
+}
+
+
+###
+POST {{usersUrls}} HTTP/1.1
+Content-Type: application/json
+ Authorization: Bearer {{adminToken}}
+
+
+###
+POST {{usersUrls}}/d58b8249-419f-4c53-a60c-560910984daf HTTP/1.1
+Content-Type: application/json
+ Authorization: Bearer {{adminToken}}
+
+###
+DELETE {{usersUrls}}/fd07cdeb-9ad2-4da4-8b77-6ede97e82d3c HTTP/1.1
+Content-Type: application/json
+ Authorization: Bearer {{adminToken}}
+
+
+###
+POST {{analyzeUrl}} HTTP/1.1
+Authorization: Bearer {{adminToken}}
+----WebKitFormBoundaryE19zNvXGzXaLvS5C
+Content-Disposition: form-data; name="UserId"
+
+"fd577b1a-20d3-40f0-a80d-d5509ac522db"
+----WebKitFormBoundaryE19zNvXGzXaLvS5C
+Content-Disposition: form-data; name="HubConnectionId"
+
+"fd577b1a-20d3-40f0-a80d-d5509ac522db"
+----WebKitFormBoundaryE19zNvXGzXaLvS5C
+Content-Disposition: form-data; 
+Content-Type: image/jpg

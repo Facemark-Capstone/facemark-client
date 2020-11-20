@@ -1,5 +1,104 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Application xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="mobile.App">
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             x:Class="mobile.App">
     <Application.Resources>
+        <ResourceDictionary Source="Resources/Themes/LightTheme.xaml">
+
+            <yummy:DropShadow x:Key="CardShadow" Color="{DynamicResource Primary}"
+                              Offset="0, 5" BlurRadius="10" Opacity=".1"/>
+
+            <yummy:DropShadow x:Key="EntryShadow" Color="{DynamicResource Primary}"
+                              Offset="0, 10" BlurRadius="10" Opacity=".15"/>
+
+            <yummy:Border x:Key="EntryBorder" Color="White" DrawingStyle="Inside" Thickness="3"/>
+
+            <Style TargetType="ContentPage" x:Key="Page">
+                <Setter Property="BackgroundColor" Value="{DynamicResource Key=PageBackgroundColor}"/>
+            </Style>
+
+            <Style TargetType="Label" x:Key="HeaderText">
+                <Setter Property="FontSize" Value="48"/>
+                <Setter Property="FontFamily" Value="pob"/>
+                <Setter Property="TextColor" Value="{DynamicResource Key=Primary}"/>
+            </Style>
+
+            <Style TargetType="yummy:PancakeView" x:Key="LoginCard">
+                <Setter Property="Shadow" Value="{StaticResource CardShadow}"/>
+                <Setter Property="CornerRadius" Value="40"/>
+                <Setter Property="Margin" Value="20"/>
+                <Setter Property="VerticalOptions" Value="End"/>
+                <Setter Property="BackgroundColor" Value="{DynamicResource Key=PageBackgroundColor}"/>
+            </Style>
+
+            <Style TargetType="yummy:PancakeView" x:Key="TakePhotoCard">
+                <Setter Property="Shadow" Value="{StaticResource EntryShadow}"/>
+                <Setter Property="Border" Value="{StaticResource EntryBorder}"/>
+                <Setter Property="CornerRadius" Value="15"/>
+                <Setter Property="VerticalOptions" Value="End"/>
+                <Setter Property="BackgroundColor" Value="{DynamicResource Key=PageBackgroundColor}"/>
+            </Style>
+
+            <Style TargetType="yummy:PancakeView" x:Key="HistoryRevealCard">
+                <Setter Property="Shadow" Value="{StaticResource EntryShadow}"/>
+                <Setter Property="CornerRadius" Value="20"/>
+                <Setter Property="Margin" Value="20"/>
+                <Setter Property="VerticalOptions" Value="End"/>
+                <Setter Property="BackgroundColor" Value="{DynamicResource Key=PageBackgroundColor}"/>
+            </Style>
+
+            <Style TargetType="yummy:PancakeView" x:Key="EntryCard">
+                <Setter Property="Shadow" Value="{StaticResource EntryShadow}"/>
+                <Setter Property="Border" Value="{StaticResource EntryBorder}"/>
+                <Setter Property="CornerRadius" Value="20"/>
+                <Setter Property="Padding" Value="15, 10"/>
+                <Setter Property="Margin" Value="30, 0"/>
+            </Style>
+
+            <Style TargetType="Label" x:Key="Title1" BasedOn="{StaticResource HeaderText}">
+                <Setter Property="FontSize" Value="32"/>
+                <Setter Property="Margin" Value="30, 30"/>
+            </Style>
+
+            <Style TargetType="Label" x:Key="ErrorLabel">
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="Margin" Value="30, 0, 30, 30"/>
+                <Setter Property="TextColor" Value="{DynamicResource Error}"/>
+                <Setter Property="FontFamily" Value="pom"/>
+            </Style>
+
+            <Style TargetType="Label" x:Key="Title2" BasedOn="{StaticResource HeaderText}">
+                <Setter Property="FontSize" Value="24"/>
+            </Style>
+
+            <Style TargetType="Label" x:Key="EntryIcon">
+                <Setter Property="TextColor" Value="{DynamicResource Key=Primary}"/>
+                <Setter Property="FontSize" Value="22"/>
+                <Setter Property="FontFamily" Value="fas"/>
+                <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+                <Setter Property="HorizontalOptions" Value="Start"/>
+            </Style>
+
+            <Style TargetType="Label" x:Key="ButtonLabel">
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="FontFamily" Value="pom"/>
+                <Setter Property="TextColor" Value="{DynamicResource Key=TextSecondary}"/>
+            </Style>
+
+            <Style TargetType="Button" x:Key="ActionButton">
+                <Setter Property="FontSize" Value="24"/>
+                <Setter Property="FontFamily" Value="pom"/>
+                <Setter Property="TextColor" Value="{DynamicResource Key=OnPrimary}"/>
+                <Setter Property="Margin" Value="40, 20, 40, 40"/>
+                <Setter Property="CornerRadius" Value="20"/>
+                <Setter Property="BackgroundColor" Value="{DynamicResource Primary}"/>
+            </Style>
+
+            <Style TargetType="Button" x:Key="ButtonIcon">
+                <Setter Property="FontFamily" Value="fonticon"/>
+                <Setter Property="CornerRadius" Value="20"/>
+            </Style>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

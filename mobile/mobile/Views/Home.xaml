@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="mobile.Views.Home"
+             xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             xmlns:vm="clr-namespace:mobile.ViewModels"
+             xmlns:lottie="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
+             NavigationPage.HasNavigationBar="False">
+    <ContentPage.BindingContext>
+        <vm:HomeViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label" x:Key="RegularLabel">
+                <Setter Property="FontSize" Value="28"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="FontFamily" Value="por"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid>
+        <ScrollView VerticalScrollBarVisibility="Never" IsVisible="{Binding IsNotBusy}">
+            <StackLayout>
+                <StackLayout Orientation="Horizontal" Margin="30, 50, 30, 0">
+                    <Label Text="Home" Style="{StaticResource HeaderText}"/>
+                    <yummy:PancakeView Style="{StaticResource TakePhotoCard}" HorizontalOptions="EndAndExpand" VerticalOptions="Center">
+                        <lottie:AnimationView HeightRequest="40" WidthRequest="40" AnimationSource="EmbeddedResource"
+                                              Animation="Resources.facescan.json" RepeatMode="Infinite" Margin="5"
+                                              Command="{Binding TakePhotoCommand}"/>
+                    </yummy:PancakeView>
+                </StackLayout>
+
+                <yummy:PancakeView HorizontalOptions="FillAndExpand" HeightRequest="220" Style="{StaticResource LoginCard}" BackgroundColor="{DynamicResource Primary}">
+
+                </yummy:PancakeView>
+
+                <Expander IsExpanded="{Binding HistoryExpanded}">
+                    <Expander.Header>
+                        <StackLayout Orientation="Horizontal" Padding="40, 0">
+                            <Label Text="History" Style="{StaticResource Title2}" VerticalOptions="Center"/>
+                            <Label Text="{Binding HistoryRevealChevron}" FontFamily="fas" FontSize="24" TextColor="Black" HorizontalOptions="EndAndExpand" VerticalOptions="Center"/>
+                        </StackLayout>
+                    </Expander.Header>
+
+                    <Label Text="Here some results from the past." Style="{StaticResource HeaderText}"/>
+                </Expander>
+            </StackLayout>
+        </ScrollView>
+        <Grid BackgroundColor="#cc222222" IsVisible="{Binding IsBusy}">
+            <Grid IsVisible="{Binding IsLoading}">
+                <Image HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Source="{Binding Image}"/>
+                <Label Text="We are detecting face orientation." Style="{StaticResource RegularLabel}" Margin="30, 100, 0, 0"/>
+                <lottie:AnimationView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" AnimationSource="EmbeddedResource"
+                                      Animation="Resources.loading.json" RepeatMode="Infinite" Margin="5"/>
+            </Grid>
+            <StackLayout Margin="30, 100, 30, 50" IsVisible="{Binding IsSuccess}">
+                <Label Text="Success!" FontFamily="pom" TextColor="White" FontSize="32"/>
+                <Frame Padding="0" Margin="0" BackgroundColor="Transparent" CornerRadius="20" IsClippedToBounds="True">
+                    <Image HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Source="{Binding Image}"/>
+                </Frame>
+                <Grid>
+                    <Label Style="{StaticResource RegularLabel}" Text="Pitch" Grid.Column="0" Grid.Row="0" HorizontalTextAlignment="Start"/>
+                    <Label Style="{StaticResource RegularLabel}" Text="Yaw" Grid.Column="0" Grid.Row="1" HorizontalTextAlignment="Start" />
+                    <Label Style="{StaticResource RegularLabel}" Text="Roll" Grid.Column="0" Grid.Row="2" HorizontalTextAlignment="Start"/>
+                    <Label Style="{StaticResource RegularLabel}" Text="{Binding Pitch}" Grid.Column="1" Grid.Row="0" HorizontalTextAlignment="Center"/>
+                    <Label Style="{StaticResource RegularLabel}" Text="{Binding Yaw}" Grid.Column="1" Grid.Row="1" HorizontalTextAlignment="Center"/>
+                    <Label Style="{StaticResource RegularLabel}" Text="{Binding Roll}" Grid.Column="1" Grid.Row="2" HorizontalTextAlignment="Center"/>
+                </Grid>
+                <StackLayout Orientation="Horizontal" VerticalOptions="End">
+                    <Button HorizontalOptions="StartAndExpand" Text="Cancel" Style="{StaticResource RegularLabel}" Command="{Binding CancelCommand}"/>
+                    <Button HorizontalOptions="EndAndExpand" Text="Analyze" Style="{StaticResource RegularLabel}"/>
+                </StackLayout>
+            </StackLayout>
+
+            <StackLayout Margin="30, 100, 30, 50" IsVisible="{Binding IsError}">
+                <Label Text="Error!" FontFamily="pom" TextColor="IndianRed" FontSize="32"/>
+                <Label Style="{StaticResource RegularLabel}"  VerticalOptions="Center" Text="{Binding ErrorMessage}"/>
+                <StackLayout Orientation="Horizontal" VerticalOptions="EndAndExpand">
+                    <Button HorizontalOptions="StartAndExpand" Text="Cancel" Style="{StaticResource RegularLabel}" Command="{Binding CancelCommand}"/>
+                </StackLayout>
+            </StackLayout>
+
+        </Grid>
+    </Grid>
+
+</ContentPage>
