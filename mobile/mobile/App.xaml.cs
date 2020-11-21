@@ -13,15 +13,15 @@ namespace mobile
 
             Startup.Init();
 
-            if (Current.Properties.ContainsKey("logged-in") && (bool)Current.Properties["logged-in"])
-            {
-                MainPage = new NavigationPage(new Home());
-            }
-            else
-            {
-                Current.Properties["logged-in"] = false;
-                MainPage = new NavigationPage(new LoginPage());
-            }
+            //if (Current.Properties.ContainsKey("logged-in") && (bool)Current.Properties["logged-in"])
+            //{
+            //    MainPage = new NavigationPage(new Home());
+            //}
+            //else
+            //{
+            //    Current.Properties["logged-in"] = false;
+            //}
+            MainPage = new NavigationPage(new LoginPage());
         }
 
         protected override void OnStart()
