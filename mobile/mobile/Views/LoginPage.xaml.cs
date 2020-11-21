@@ -10,9 +10,27 @@ namespace mobile.Views
             InitializeComponent();
         }
 
-        async void NavigateToRegisgerPage(System.Object sender, System.EventArgs e)
+        protected override void OnAppearing()
         {
-            await Navigation.PushAsync(new RegisterPage());
+            base.OnAppearing();
+
+            registerCard.TranslationY = 600;
+        }
+
+        async void RevealRegisterCardAsync(object sender, System.EventArgs e)
+        {
+            await loginCard.TranslateTo(0, 600, 250, Easing.SinIn);
+            loginCard.IsVisible = false;
+            registerCard.IsVisible = true;
+            await registerCard.TranslateTo(0, 0, 250, Easing.SinOut);
+        }
+
+        async void RevealLoginCardAsync(object sender, System.EventArgs e)
+        {
+            await registerCard.TranslateTo(0, 600, 250, Easing.SinIn);
+            registerCard.IsVisible = false;
+            loginCard.IsVisible = true;
+            await loginCard.TranslateTo(0, 0, 250, Easing.SinOut);
         }
     }
 }

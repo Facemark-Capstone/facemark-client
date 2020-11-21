@@ -2,14 +2,11 @@
 <ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms"
                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                     x:Class="mobile.Resources.Themes.LightTheme">
-    <Color x:Key="PageBackgroundColor">White</Color>
-    <Color x:Key="Primary">#6A0F6B</Color>
-    <Color x:Key="PrimaryVariant">#C21CC4</Color>
-    <Color x:Key="Secondary">#E7CEE3</Color>
-    <Color x:Key="SecondaryVariant">#E0E1E9</Color>
-    <Color x:Key="OnPrimary">White</Color>
-    <Color x:Key="OnSecondary">DarkGray</Color>
-    <Color x:Key="TextPrimary">#212121</Color>
-    <Color x:Key="TextSecondary">#666666</Color>
-    <Color x:Key="Error">IndianRed</Color>
+    <Color x:Key="page-backgroud">#F0F1F6</Color>
+    <Color x:Key="primary">#493986</Color>
+    <Color x:Key="secondary">#3B3B3B</Color>
+    <Color x:Key="surface">White</Color>
+    <Color x:Key="text-primary">#212121</Color>
+    <Color x:Key="text-secondary">#666666</Color>
+    <Color x:Key="error">IndianRed</Color>
 </ResourceDictionary>

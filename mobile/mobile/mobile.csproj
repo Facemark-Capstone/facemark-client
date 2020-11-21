@@ -44,6 +44,7 @@
     <Folder Include="Errors\" />
     <Folder Include="Services\SqlLite\" />
     <Folder Include="Extensions\" />
+    <Folder Include="Utils\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Resources\Fonts\Poppins-Bold.ttf" />
