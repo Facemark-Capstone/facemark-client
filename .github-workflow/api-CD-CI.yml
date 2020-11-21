@@ -1,0 +1,51 @@
+name: CAM CI/CD
+
+on:
+  push:
+    branches: [ dev ]
+  pull_request:
+    branches: [ dev ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Login to DockerHub Registry
+      run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+    - name: Build the latest Docker image
+      run: docker build /api/Dockerfile -t davidwahid/facemark-api:latest
+    - name: Push the latest Docker image
+      run: docker push davidwahid/facemark-api:latest
+  
+  
+  deploy:
+    needs: [build]
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Deploy Facemark API to DigitalOcean
+        uses: appleboy/ssh-action@master
+        env: 
+          GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          host: ${{ secrets.DO_HOST }}
+          username: ${{ secrets.DO_USERNAME }}
+          password: ${{ secrets.DO_PASSWORD }}
+          port: ${{ secrets.DO_PORT }}
+          envs: GITHUB_USERNAME, GITHUB_TOKEN
+          script: |
+            
+            cd facemark
+            git pull origin dev
+            dotnet ef database update --project /api/api.csproj
+            cd ..
+            
+            docker pull davidwahid/facemark-api:latest
+            docker stop facemark-api
+            docker rm facemark-api
+            docker run --restart=always -d --network host --name facemark-api  davidwahid/facemark-api:latest &>> facemark-api.log
