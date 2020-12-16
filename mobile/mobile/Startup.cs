@@ -7,14 +7,15 @@ using Microsoft.Extensions.Hosting;
 using mobile.Options;
 using mobile.Services;
 using mobile.Services.SqlLite;
+using mobile.Views;
 using Xamarin.Essentials;
-using Xamarin.Forms;
 
 namespace mobile
 {
     public static class Startup
     {
         public static IServiceProvider ServiceProvider { get; set; }
+
         public static App Init()
         {
             var a = Assembly.GetExecutingAssembly();
@@ -38,6 +39,7 @@ namespace mobile
 
             //Save our service provider so we can use it later.
             ServiceProvider = host.Services;
+
             return ServiceProvider.GetService<App>();
         }
 
@@ -51,11 +53,14 @@ namespace mobile
             }
             else
             {
+                services.AddSingleton<App>();
                 services.AddSingleton<IAccountService, AccountService>();
                 services.AddSingleton<IFaceRecognitionService, FaceRecognitionService>();
                 services.AddSingleton<IAnalysisService, AnalysisService>();
                 services.AddSingleton<IResultsRepo, ResultsRepo>();
-                services.AddSingleton<App>();
+                services.AddSingleton<IHubService, HubService>();
+                services.AddTransient<IAppService, AppService>();
+                services.AddTransient<ResultDetailPage>();
                 services.AddHttpClient();
 
                 services.Configure<AccountOptions>(ctx.Configuration.GetSection("Facemark:Account"));

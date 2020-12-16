@@ -17,7 +17,7 @@ namespace api.Hubs.Repository
 
         public async Task UpdateOrderStatus(UpdateOrderStatusModel model)
         {
-            await Hub.Clients.Client(model.HubConnectionId).SendAsync("UpdateOrderStatus", model.Status.ToString(), model.HubConnectionId);
+            await Hub.Clients.Client(model.HubConnectionId).SendAsync("UpdateOrderStatus", model.OrderId, model.Status.ToString(), model.HubConnectionId, model.Result);
         }
     }
 

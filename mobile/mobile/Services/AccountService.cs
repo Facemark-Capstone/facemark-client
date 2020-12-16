@@ -165,7 +165,7 @@ namespace mobile.Services
                 return new Response<AccountResponseModel>()
                 {
                     IsSuccessful = false,
-                    Message = $"Can't login... {httpResponse.StatusCode}",
+                    Message = $"Can't Register... {httpResponse.StatusCode}",
                     StatusCode = (int)httpResponse.StatusCode,
                 };
             }

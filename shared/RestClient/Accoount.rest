@@ -1,5 +1,5 @@
-@host = https://david.local
-@port = 5001
+@host = http://david.local
+@port = 5000
 @baseUrl = {{host}}:{{port}}/api
 @registerUrl = {{baseUrl}}/account/register
 @loginUrl = {{baseUrl}}/account/login
@@ -8,7 +8,7 @@
 @analyzeUrl = {{baseUrl}}/analysis
 
 @token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJkYXZpZDZAZ2x1d2EuY29tIiwicm9sZSI6IkNsaWVudCIsIm5iZiI6MTYwNTUzOTM0MiwiZXhwIjoxNjA2MTQ0MTQyLCJpYXQiOjE2MDU1MzkzNDIsImlzcyI6Imh0dHBzOi8vYXBpLmZhY2VtYXJrLmNvbSIsImF1ZCI6Imh0dHBzOi8vZmFjZW1hcmsuY29tIn0.c93hrKzPSbKjbFq9jwAIBT29V0frQXjiEmr-YkiFwDY
-@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJkYXZpZDdAZ2x1d2EuY29tIiwicm9sZSI6IkFkbWluIiwibmJmIjoxNjA1NTQwMjc1LCJleHAiOjE2MDYxNDUwNzUsImlhdCI6MTYwNTU0MDI3NSwiaXNzIjoiaHR0cHM6Ly9hcGkuZmFjZW1hcmsuY29tIiwiYXVkIjoiaHR0cHM6Ly9mYWNlbWFyay5jb20ifQ._MLW9NZJ5SbeQ5smM4wMXarOoIeFgFQZ5gV89QouUCU
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJkYXZpZC53YWhpZEBnbHV3YS5jb20iLCJyb2xlIjoiQWRtaW4iLCJuYmYiOjE2MDY2MjY0OTgsImV4cCI6MTYwNzIzMTI5OCwiaWF0IjoxNjA2NjI2NDk4LCJpc3MiOiJodHRwczovL2FwaS5mYWNlbWFyay5jb20iLCJhdWQiOiJodHRwczovL2ZhY2VtYXJrLmNvbSJ9.4kBgOgfI7OK-QJXR26gywia6a8GY6Qu3FQeleL6zXVM
 
 
 POST {{registerUrl}} HTTP/1.1
@@ -43,14 +43,15 @@ Content-Type: application/json
  Authorization: Bearer {{adminToken}}
 
 ###
-DELETE {{usersUrls}}/fd07cdeb-9ad2-4da4-8b77-6ede97e82d3c HTTP/1.1
+DELETE {{usersUrls}}/9f345802-dd2e-4f80-873d-5692bb8b4bee HTTP/1.1
 Content-Type: application/json
  Authorization: Bearer {{adminToken}}
 
 
 ###
 POST {{analyzeUrl}} HTTP/1.1
-Authorization: Bearer {{adminToken}}
+clear
+: Bearer {{adminToken}}
 ----WebKitFormBoundaryE19zNvXGzXaLvS5C
 Content-Disposition: form-data; name="UserId"
 
@@ -62,3 +63,8 @@ Content-Disposition: form-data; name="HubConnectionId"
 ----WebKitFormBoundaryE19zNvXGzXaLvS5C
 Content-Disposition: form-data; 
 Content-Type: image/jpg
+
+
+###
+
+POST http://localhost:5000/internal-api/model/analyze HTTP/1.1

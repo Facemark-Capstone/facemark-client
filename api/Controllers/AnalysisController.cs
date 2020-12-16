@@ -4,15 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
 using api.Hubs.Repository;
+using api.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using shared.Models;
 using shared.Models.AI;
-using shared.Models.Analysis;
 using shared.Models.Hub;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -27,62 +26,73 @@ namespace api.Controllers
         private readonly UserManager<User> mUserManager;
         private readonly ILogger<AccountController> mLogger;
         private readonly FacemarkDbContext mContext;
+        private readonly IQueueService<Order> mOrderQueue;
+
         public IAiRepository AiRepository { get; }
 
         public AnalysisController(
                     UserManager<User> userManager,
                     ILogger<AccountController> logger,
                     FacemarkDbContext context,
-                    IAiRepository aiRepository)
+                    IAiRepository aiRepository,
+                    IQueueService<Order> orderQueue)
         {
             mUserManager = userManager;
             mLogger = logger;
             mContext = context;
             AiRepository = aiRepository;
+            mOrderQueue = orderQueue;
         }
 
 
         [HttpPost]
-        [Route("")]
-        public async Task<IActionResult> Analyze([FromBody] IFormFile image)
+        [Route("analyze")]
+        public async Task<IActionResult> Analyze()
         {
-            //if (model == null || model.Image == null)
-            //{
-            //    return BadRequest(new { error = true });
-            //}
+            Order order;
+            mLogger.LogInformation($"{Request.Headers["user-id"]}{Request.Headers["hub-id"]}");
 
-            //User user = await mUserManager.Users.Where(user => user.Id == model.UserId).FirstOrDefaultAsync();
-            //if (user == null)
-            //{
-            //    return new ForbidResult();
-            //}
+            if (string.IsNullOrWhiteSpace(Request.Headers["user-id"])
+                //|| string.IsNullOrWhiteSpace(Request.Headers["content-type"])
+                || string.IsNullOrWhiteSpace(Request.Headers["hub-id"]))
+            {
+                return BadRequest(new { error = true });
+            }
 
+            User user = await mUserManager.Users.Where(user => user.Id == Request.Headers["user-id"].ToString()).FirstOrDefaultAsync();
+            if (user == null)
+            {
+                return new ForbidResult();
+            }
 
-            //long size = model.Image.Length;
-            //// add validation to size
+            try
+            {
+                using (var stream = new MemoryStream())
+                {
+                    await Request.Body.CopyToAsync(stream);
+                    order = new Order(
+                            userId: user.Id,
+                            createdAt: DateTime.UtcNow,
+                            imageData: stream.ToArray(),
+                            dataHeaders: Request.Headers["content-type"],
+                            orderStatus: EOrderStatus.Accepted,
+                            hubConnectionId: Request.Headers["hub-id"])
+                    {
+                        ModifiedAt = DateTime.UtcNow
+                    };
 
-            //if (model.Image.Length > 0)
-            //{
-            //    using (var stream = new MemoryStream())
-            //    {
-            //        await model.Image.CopyToAsync(stream);
-            //        Order order = new Order(
-            //                userId: user.Id,
-            //                createdAt: DateTime.UtcNow,
-            //                imageData: stream.ToArray(),
-            //                dataHeaders: model.Image.ContentType,
-            //                orderStatus: EOrderStatus.Accepted,
-            //                hubConnectionId: model.HubConnectionId)
-            //        {
-            //            ModifiedAt = DateTime.UtcNow
-            //        };
-            //        await mContext.Orders.AddAsync(order);
-            //        await mContext.SaveChangesAsync();
-            //        await AiRepository.UpdateOrderStatus(new UpdateOrderStatusModel(order.Id, order.OrderStatus, order.HubConnectionId));
-            //    }
-            //}
-
-            return StatusCode(202);
+                    await mContext.Orders.AddAsync(order);
+                    await mContext.SaveChangesAsync();
+                    mOrderQueue.Enqueue(order);
+                    await AiRepository.UpdateOrderStatus(new UpdateOrderStatusModel(order.Id, order.OrderStatus, order.HubConnectionId, new OrderResult()));
+                }
+                return Accepted(new { orderId = order.Id });
+            }
+            catch (Exception ex)
+            {
+                mLogger.LogError($"Database error: {ex.Message}");
+                return StatusCode(500);
+            }
         }
     }
 }

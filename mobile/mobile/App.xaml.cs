@@ -11,17 +11,15 @@ namespace mobile
 
             Device.SetFlags(new string[] { "Expander_Experimental" });
 
-            Startup.Init();
-
-            //if (Current.Properties.ContainsKey("logged-in") && (bool)Current.Properties["logged-in"])
-            //{
-            //    MainPage = new NavigationPage(new Home());
-            //}
-            //else
-            //{
-            //    Current.Properties["logged-in"] = false;
-            //}
-            MainPage = new NavigationPage(new LoginPage());
+            if (Current.Properties.ContainsKey("logged-in") && (bool)Current.Properties["logged-in"])
+            {
+                MainPage = new NavigationPage(new Home());
+            }
+            else
+            {
+                MainPage = new NavigationPage(new LoginPage());
+                Current.Properties["logged-in"] = false;
+            }
         }
 
         protected override void OnStart()

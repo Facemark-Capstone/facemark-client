@@ -13,18 +13,6 @@ namespace api.Data
             //SeedUsers(userManager);
         }
 
-        //private static void SeedUsers(UserManager<User> userManager)
-        //{
-        //    var superadmin = new User() { Email = "sadmin@mmk.com", UserName = "superadmin" };
-        //    SeedUser(userManager, superadmin, "sadmin", "superadmin");
-
-        //    var admin = new User() { Email = "admin@mmk.com", UserName = "admin" };
-        //    SeedUser(userManager, admin, "admin", "admin");
-
-        //    var principal = new User() { Email = "principal@mmk.com", UserName = "principal", SchoolName = "Cambridge" };
-        //    SeedUser(userManager, principal, "principal", "principal");
-        //}
-
         private static void SeedUser(UserManager<User> userManager, User user, string password, string role)
         {
             try

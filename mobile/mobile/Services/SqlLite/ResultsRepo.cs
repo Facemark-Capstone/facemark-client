@@ -13,7 +13,8 @@ namespace mobile.Services.SqlLite
     {
         Task<List<Result>> GetResultsAsync();
         Task<List<Result>> GetResultsByStatusAsync(string status);
-        Task<Result> GetResultAsync(string id);
+        Task<Result> GetResultAsync(int id);
+        Task<Result> GetResultAsyncByOrderId(string id);
         Task<int> SaveResultAsync(Result result);
     }
 
@@ -56,14 +57,19 @@ namespace mobile.Services.SqlLite
             return Database.QueryAsync<Result>($"SELECT * FROM [Result] WHERE [Status] = '{status}'");
         }
 
-        public Task<Result> GetResultAsync(string id)
+        public Task<Result> GetResultAsyncByOrderId(string id)
+        {
+            return Database.Table<Result>().Where(i => i.OrderId == id).FirstOrDefaultAsync();
+        }
+
+        public Task<Result> GetResultAsync(int id)
         {
             return Database.Table<Result>().Where(i => i.Id == id).FirstOrDefaultAsync();
         }
 
         public Task<int> SaveResultAsync(Result result)
         {
-            if (!string.IsNullOrWhiteSpace(result.Id))
+            if (result.Id >= 0)
             {
                 return Database.UpdateAsync(result);
             }

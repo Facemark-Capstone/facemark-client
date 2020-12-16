@@ -21,14 +21,16 @@ namespace mobile.ViewModels
     {
         public IAccountService mAccountService { get; }
         public IOptionsSnapshot<AccountOptions> mAccountOptions { get; }
+        public IAppService mApp { get; }
 
         public LoginPageViewModel()
         {
             mAccountService = Startup.ServiceProvider.GetService<IAccountService>();
             mAccountOptions = Startup.ServiceProvider.GetService<IOptionsSnapshot<AccountOptions>>();
+            mApp = Startup.ServiceProvider.GetService<IAppService>();
 
-            //Email = mAccountOptions.Value.Email;
-            //Password = mAccountOptions.Value.Password;
+            Email = mAccountOptions.Value.Email;
+            Password = mAccountOptions.Value.Password;
             IsValidName = true;
             IsValidEmail = true;
             IsValidPassword = true;
@@ -106,10 +108,10 @@ namespace mobile.ViewModels
 
         public ICommand LoginCommand => new AsyncCommand(async () =>
         {
-            await AccountAction();
+            await AccountAction(false);
         });
 
-        async Task AccountAction(bool isRegister = false)
+        async Task AccountAction(bool isRegister)
         {
             IsValidEmail = RegexUtilities.IsValidEmail(Email);
             IsValidPassword = RegexUtilities.IsValidPassword(Password);
@@ -127,17 +129,12 @@ namespace mobile.ViewModels
                     }
                     else if (IsValidName)
                     {
-                        response = await mAccountService.Register(Email, Password, Name);
-                    }
-
-                    if (response == null)
-                    {
-                        throw new Exception("Unknow error occured! That's all we know...");
+                        response = await mAccountService.Register(Name, Email, Password);
                     }
 
                     if (!response.IsSuccessful)
                     {
-                        showError(response.Message);
+                        throw new Exception("Unknow error occured! That's all we know...");
                     }
 
                     saveUserInfo(response.ReturnObject);
@@ -168,12 +165,12 @@ namespace mobile.ViewModels
 
         private void saveUserInfo(AccountResponseModel model)
         {
-            Application.Current.Properties["logged-in"] = true;
-            Application.Current.Properties["user-name"] = model.FullName;
-            Application.Current.Properties["user-email"] = model.Email;
-            Application.Current.Properties["user-role"] = model.Role;
-            Application.Current.Properties["user-id"] = model.UserId;
-            Application.Current.Properties["jwt-token"] = model.Token;
+            mApp.SetProperty("logged-in", true);
+            mApp.SetProperty("user-name", model.FullName);
+            mApp.SetProperty("user-email", model.Email);
+            mApp.SetProperty("user-role", model.Role);
+            mApp.SetProperty("user-id", model.UserId);
+            mApp.SetProperty("jwt-token", model.Token);
         }
     }
 }

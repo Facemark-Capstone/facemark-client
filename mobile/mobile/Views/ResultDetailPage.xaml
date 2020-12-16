@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="mobile.Views.ResultDetailPage"
+             BackgroundColor="{DynamicResource page-backgroud}"
+             xmlns:chart="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
+             xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="result-header-card" TargetType="yummy:PancakeView">
+                <Setter Property="CornerRadius" Value="20"/>
+                <Setter Property="Margin" Value="30, 3"/>
+                <Setter Property="Padding" Value="30, 10"/>
+                <Setter Property="Shadow" Value="{StaticResource elevation-medium}"/>
+                <Setter Property="BackgroundColor" Value="{DynamicResource surface}"/>
+            </Style>
+
+            <Style x:Key="result-card" BasedOn="{StaticResource result-header-card}" TargetType="yummy:PancakeView">
+                <Setter Property="Padding" Value="10, 20"/>
+            </Style>
+
+            <Style x:Key="result-text" TargetType="Label">
+                <Setter Property="FontFamily" Value="pom"/>
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="TextColor" Value="{DynamicResource primary}"/>
+                <Setter Property="HorizontalOptions" Value="StartAndExpand"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            </Style>
+
+            <Style x:Key="result-bold-label" BasedOn="{StaticResource text-title-small}" TargetType="Label">
+            </Style>
+
+            <yummy:Border x:Key="border-thin" Color="Gray" DrawingStyle="Inside" Thickness="1"/>
+
+            <Style x:Key="card-bordered" TargetType="yummy:PancakeView">
+                <Setter Property="Padding" Value="10, 5"/>
+                <Setter Property="Margin" Value="5, 20"/>
+                <Setter Property="CornerRadius" Value="10"/>
+                <Setter Property="BackgroundColor" Value="{DynamicResource surface}"/>
+                <Setter Property="Border" Value="{StaticResource border-thin}"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="auto, *">
+        <chart:ChartView x:Name="chart" Margin="0" HeightRequest="300" WidthRequest="300"/>
+        <ScrollView Grid.RowSpan="2">
+            <StackLayout Spacing="50">
+                <BoxView HeightRequest="300" BackgroundColor="Transparent"/>
+
+                <StackLayout>
+                    <yummy:PancakeView Style="{StaticResource result-header-card}">
+                        <Label Style="{StaticResource text-title-medium}"
+                               Text="AI Outputs" HorizontalOptions="CenterAndExpand"/>
+                    </yummy:PancakeView>
+                    <yummy:PancakeView Style="{StaticResource result-card}">
+                        <Grid ColumnDefinitions="*, auto, *">
+                            <StackLayout Grid.Column="0" Spacing="20">
+                                <Label Style="{StaticResource result-text}"
+                                       Text="Decision" HorizontalOptions="CenterAndExpand"/>
+                                <yummy:PancakeView Style="{StaticResource card-bordered}">
+                                    <Label Style="{StaticResource result-bold-label}"
+                                           Text="Positive" HorizontalOptions="CenterAndExpand">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label" Binding="{Binding IsSymmetry}" Value="False">
+                                                <Setter Property="Text" Value="Negative"/>
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+                                </yummy:PancakeView>
+                            </StackLayout>
+                            <BoxView Grid.Column="1" BackgroundColor="{DynamicResource primary}" WidthRequest="1" Margin="0, 10"/>
+                            <StackLayout Grid.Column="2" Spacing="20">
+                                <Label Style="{StaticResource result-text}"
+                                       Text="Score" HorizontalOptions="CenterAndExpand"/>
+                                <yummy:PancakeView Style="{StaticResource card-bordered}">
+                                    <Label Style="{StaticResource result-bold-label}"
+                                           Text="{Binding AiScore}" HorizontalOptions="CenterAndExpand"/>
+                                </yummy:PancakeView>
+                            </StackLayout>
+                        </Grid>
+                    </yummy:PancakeView>
+                </StackLayout>
+
+                <StackLayout>
+                    <yummy:PancakeView Style="{StaticResource result-header-card}">
+                        <Label Style="{StaticResource text-title-medium}"
+                               Text="ML" HorizontalOptions="CenterAndExpand"/>
+                    </yummy:PancakeView>
+                    <yummy:PancakeView Style="{StaticResource result-card}" Padding="20">
+                        <StackLayout>
+                            <Grid>
+                                <Label Style="{StaticResource result-text}" Grid.Column="0"
+                                       Text="Face" HorizontalOptions="StartAndExpand" VerticalOptions="Center"/>
+                                <yummy:PancakeView Style="{StaticResource card-bordered}" Margin="10, 0" Grid.Column="1">
+                                    <Label Style="{StaticResource result-bold-label}"
+                                           Text="{Binding FaceAssymetry}" HorizontalOptions="Center"/>
+                                </yummy:PancakeView>
+                            </Grid>
+                            <Grid>
+                                <Label Style="{StaticResource result-text}" Grid.Column="0"
+                                       Text="Eye" HorizontalOptions="StartAndExpand" VerticalOptions="Center"/>
+                                <yummy:PancakeView Style="{StaticResource card-bordered}" Margin="10, 0" Grid.Column="1">
+                                    <Label Style="{StaticResource result-bold-label}"
+                                           Text="{Binding EyeAssymetry}" HorizontalOptions="Center"/>
+                                </yummy:PancakeView>
+                            </Grid>
+                            <Grid>
+                                <Label Style="{StaticResource result-text}" Grid.Column="0"
+                                       Text="Nose" HorizontalOptions="StartAndExpand" VerticalOptions="Center"/>
+                                <yummy:PancakeView Style="{StaticResource card-bordered}" Margin="10, 0" Grid.Column="1">
+                                    <Label Style="{StaticResource result-bold-label}"
+                                           Text="{Binding NoseAssymetry}" HorizontalOptions="Center"/>
+                                </yummy:PancakeView>
+                            </Grid>
+                            <Grid>
+                                <Label Style="{StaticResource result-text}" Grid.Column="0"
+                                       Text="Mouth" HorizontalOptions="StartAndExpand" VerticalOptions="Center"/>
+                                <yummy:PancakeView Style="{StaticResource card-bordered}" Margin="10, 0" Grid.Column="1">
+                                    <Label Style="{StaticResource result-bold-label}"
+                                           Text="{Binding MouthAssymetry}" HorizontalOptions="Center"/>
+                                </yummy:PancakeView>
+                            </Grid>
+                            <Grid>
+                                <Label Style="{StaticResource result-text}" Grid.Column="0"
+                                       Text="Jaw" HorizontalOptions="StartAndExpand" VerticalOptions="Center"/>
+                                <yummy:PancakeView Style="{StaticResource card-bordered}" Margin="10, 0" Grid.Column="1">
+                                    <Label Style="{StaticResource result-bold-label}"
+                                           Text="{Binding JawAssymetry}" HorizontalOptions="Center"/>
+                                </yummy:PancakeView>
+                            </Grid>
+                        </StackLayout>
+                    </yummy:PancakeView>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </Grid>
+
+</ContentPage>

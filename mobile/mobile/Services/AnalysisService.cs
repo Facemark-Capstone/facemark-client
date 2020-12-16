@@ -1,15 +1,15 @@
 ﻿// David Wahid
 using System;
+using System.Diagnostics;
 using System.IO;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using mobile.Errors;
 using mobile.Exceptions;
-using mobile.Models;
 using mobile.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -44,7 +44,7 @@ namespace mobile.Services
         public async Task<PlaceOrderResponse> PlaceOrder(Stream imageStream, string hubId, string userId, string token)
         {
             var client = mClient.CreateClient();
-            client.DefaultRequestHeaders.Add("Authorization", $" {token}");
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
             client.DefaultRequestHeaders.Add("hub-id", hubId);
             client.DefaultRequestHeaders.Add("user-id", userId);
 
@@ -67,7 +67,6 @@ namespace mobile.Services
         async Task<TResponse> SendRequestAsync<TRequest, TResponse>(HttpClient client, HttpMethod httpMethod, string requestUrl, TRequest requestBody)
         {
             var request = new HttpRequestMessage(httpMethod, requestUrl);
-            request.RequestUri = new Uri(requestUrl);
             if (requestBody != null)
             {
                 if (requestBody is Stream)
@@ -82,45 +81,56 @@ namespace mobile.Services
                 }
             }
 
-            HttpResponseMessage responseMessage = await client.SendAsync(request);
-            if (responseMessage.IsSuccessStatusCode)
+            try
             {
-                string responseContent = null;
-                if (responseMessage.Content != null)
+                HttpResponseMessage responseMessage = await client.SendAsync(request);
+                if (responseMessage.IsSuccessStatusCode)
                 {
-                    responseContent = await responseMessage.Content.ReadAsStringAsync();
-                }
-                if (!string.IsNullOrWhiteSpace(responseContent))
-                {
-                    return JsonConvert.DeserializeObject<TResponse>(responseContent, s_settings);
-                }
-                return default(TResponse);
-            }
-            else
-            {
-                if (responseMessage.Content != null && responseMessage.Content.Headers.ContentType.MediaType.Contains("application/json"))
-                {
-                    string error = await responseMessage.Content.ReadAsStringAsync();
-                    ClientError ex = JsonConvert.DeserializeObject<ClientError>(error);
-                    if (ex.Error != null)
+                    string responseContent = null;
+                    if (responseMessage.Content != null)
                     {
-                        throw new AnalysisException(ex.Error.ErrorCode, ex.Error.Message, responseMessage.StatusCode);
+                        var responseStream = await responseMessage.Content.ReadAsStreamAsync();
+                        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                        return await System.Text.Json.JsonSerializer.DeserializeAsync<TResponse>(responseStream, options);
                     }
-                    else
+                    if (!string.IsNullOrWhiteSpace(responseContent))
                     {
-                        ServiceError serviceEx = JsonConvert.DeserializeObject<ServiceError>(error);
-                        if (ex != null)
+                        return JsonConvert.DeserializeObject<TResponse>(responseContent, s_settings);
+                    }
+                    return default(TResponse);
+                }
+                else
+                {
+                    if (responseMessage.Content != null && responseMessage.Content.Headers.ContentType.MediaType.Contains("application/json"))
+                    {
+                        string error = await responseMessage.Content.ReadAsStringAsync();
+                        ClientError ex = JsonConvert.DeserializeObject<ClientError>(error);
+                        if (ex.Error != null)
                         {
-                            throw new AnalysisException(serviceEx.ErrorCode, serviceEx.Message, responseMessage.StatusCode);
+                            throw new AnalysisException(ex.Error.ErrorCode, ex.Error.Message, responseMessage.StatusCode);
                         }
                         else
                         {
-                            throw new AnalysisException("Unknown", "Unknown Error", responseMessage.StatusCode);
+                            ServiceError serviceEx = JsonConvert.DeserializeObject<ServiceError>(error);
+                            if (ex != null)
+                            {
+                                throw new AnalysisException(serviceEx.ErrorCode, serviceEx.Message, responseMessage.StatusCode);
+                            }
+                            else
+                            {
+                                throw new AnalysisException("Unknown", "Unknown Error", responseMessage.StatusCode);
+                            }
                         }
                     }
+                    responseMessage.EnsureSuccessStatusCode();
                 }
-                responseMessage.EnsureSuccessStatusCode();
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Debug.Assert(true, e.Message);
+            }
+
             return default(TResponse);
         }
     }

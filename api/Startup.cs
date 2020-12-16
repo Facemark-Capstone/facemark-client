@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using shared.Models;
+using shared.Models.AI;
 
 namespace api
 {
@@ -71,8 +72,12 @@ namespace api
             services.Configure<JwtOptions>(Configuration.GetSection("Facemark:Jwt"));
             services.Configure<EncryptionOptions>(Configuration.GetSection("Facemark:Encryption"));
 
+            services.AddHttpClient();
             services.AddScoped<IJwtService, JwtService>();
             services.AddSingleton<IAiRepository, AiRepository>();
+            services.AddSingleton<IQueueService<Order>, QueueService<Order>>();
+
+            services.AddHostedService<ModelQueueWorker>();
 
             services.AddControllers();
 
@@ -91,7 +96,7 @@ namespace api
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 

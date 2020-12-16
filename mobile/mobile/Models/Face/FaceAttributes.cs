@@ -14,5 +14,13 @@ namespace mobile.Models.Face
         public double Roll { get; set; }
         public double Yaw { get; set; }
         public double Pitch { get; set; }
+
+        public bool IsCorrect(double max = 10, double min = 10)
+        {
+            return Roll <= max && Roll >= min
+                && Yaw <= max && Yaw >= min
+                && Pitch <= max && Pitch >= min;
+        }
+
     }
 }

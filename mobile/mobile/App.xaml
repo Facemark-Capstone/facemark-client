@@ -8,31 +8,47 @@
         <ResourceDictionary Source="Resources/Themes/LightTheme.xaml">
 
             <!-- #region Label Styles-->
-            <Style TargetType="Label" x:Key="text-page-header">
-                <Setter Property="FontSize" Value="48"/>
+            <Style x:Key="text-page-header" TargetType="Label">
+                <Setter Property="FontSize" Value="32"/>
                 <Setter Property="FontFamily" Value="pob"/>
                 <Setter Property="TextColor" Value="{DynamicResource primary}"/>
             </Style>
 
-            <Style TargetType="Label" x:Key="text-title-large" BasedOn="{StaticResource text-page-header}">
-                <Setter Property="FontSize" Value="32"/>
+            <Style x:Key="text-title-large" BasedOn="{StaticResource text-page-header}" TargetType="Label">
+                <Setter Property="FontSize" Value="28"/>
             </Style>
 
-            <Style TargetType="Label" x:Key="text-title-small" BasedOn="{StaticResource text-page-header}">
+            <Style x:Key="text-title-medium" BasedOn="{StaticResource text-page-header}" TargetType="Label">
                 <Setter Property="FontSize" Value="24"/>
             </Style>
 
-            <Style TargetType="Label" x:Key="title-card-large" BasedOn="{StaticResource text-title-large}">
+            <Style x:Key="text-title-small" BasedOn="{StaticResource text-page-header}" TargetType="Label">
+                <Setter Property="FontSize" Value="18"/>
+            </Style>
+
+            <Style x:Key="text-content-medium" TargetType="Label">
+                <Setter Property="FontSize" Value="22"/>
+                <Setter Property="TextColor" Value="{DynamicResource text-primary}"/>
+                <Setter Property="FontFamily" Value="por"/>
+            </Style>
+
+            <Style x:Key="text-content-small" TargetType="Label">
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="TextColor" Value="{DynamicResource text-primary}"/>
+                <Setter Property="FontFamily" Value="pom"/>
+            </Style>
+
+            <Style x:Key="title-card-large" BasedOn="{StaticResource text-title-large}" TargetType="Label">
                 <Setter Property="Margin" Value="10, 20"/>
             </Style>
 
-            <Style TargetType="Label" x:Key="text-error-small">
+            <Style x:Key="text-error-small" TargetType="Label">
                 <Setter Property="FontFamily" Value="pom"/>
                 <Setter Property="FontSize" Value="14"/>
                 <Setter Property="TextColor" Value="{DynamicResource error}"/>
             </Style>
 
-            <Style TargetType="Label" x:Key="text-icon-small">
+            <Style x:Key="text-icon-small" TargetType="Label">
                 <Setter Property="TextColor" Value="{DynamicResource primary}"/>
                 <Setter Property="FontSize" Value="24"/>
                 <Setter Property="FontFamily" Value="fas"/>
@@ -40,14 +56,14 @@
                 <Setter Property="VerticalOptions" Value="Center"/>
             </Style>
 
-            <Style TargetType="Label" x:Key="text-button-secondary-small">
+            <Style x:Key="text-button-secondary-small" TargetType="Label">
                 <Setter Property="FontSize" Value="18"/>
                 <Setter Property="FontFamily" Value="pom"/>
                 <Setter Property="TextColor" Value="{DynamicResource text-secondary}"/>
             </Style>
             <!-- #endregion -->
 
-            <Style TargetType="Button" x:Key="button-primary">
+            <Style x:Key="button-primary" TargetType="Button">
                 <Setter Property="FontFamily" Value="pom"/>
                 <Setter Property="FontSize" Value="24"/>
                 <Setter Property="CornerRadius" Value="20"/>
@@ -55,26 +71,27 @@
                 <Setter Property="BackgroundColor" Value="{DynamicResource primary}"/>
             </Style>
 
-            <Style TargetType="Button" x:Key="button-icon" BasedOn="{StaticResource button-primary}">
+            <Style x:Key="button-icon" BasedOn="{StaticResource button-primary}" TargetType="Button">
                 <Setter Property="FontFamily" Value="fonticon"/>
                 <Setter Property="TextColor" Value="{DynamicResource primary}"/>
                 <Setter Property="BackgroundColor" Value="Transparent"/>
             </Style>
 
-            <Style TargetType="Button" x:Key="button-card-main" BasedOn="{StaticResource button-primary}">
+            <Style x:Key="button-card-main" BasedOn="{StaticResource button-primary}" TargetType="Button">
                 <Setter Property="Margin" Value="20"/>
             </Style>
 
             <yummy:DropShadow x:Key="elevation-small" Color="{DynamicResource primary}"
-                              Offset="0, 5" BlurRadius="10" Opacity=".1"/>
+                              Offset="0, 5" BlurRadius="20" Opacity=".1"/>
 
             <yummy:DropShadow x:Key="elevation-medium" Color="{DynamicResource primary}"
                               Offset="0, 10" BlurRadius="20" Opacity=".15"/>
 
             <yummy:Border x:Key="border-white" Color="White" DrawingStyle="Inside" Thickness="3"/>
             <yummy:Border x:Key="border-red" Color="IndianRed" DrawingStyle="Inside" Thickness="3"/>
+            <yummy:Border x:Key="border-image-frame" Color="White" DrawingStyle="Outside" Thickness="8"/>
 
-            <Style TargetType="yummy:PancakeView" x:Key="card-large">
+            <Style x:Key="card-large" TargetType="yummy:PancakeView">
                 <Setter Property="Shadow" Value="{StaticResource elevation-medium}"/>
                 <Setter Property="CornerRadius" Value="40"/>
                 <Setter Property="Padding" Value="20"/>
@@ -82,7 +99,7 @@
                 <Setter Property="BackgroundColor" Value="{DynamicResource surface}"/>
             </Style>
 
-            <Style TargetType="yummy:PancakeView" x:Key="card-small">
+            <Style x:Key="card-small" TargetType="yummy:PancakeView">
                 <Setter Property="Shadow" Value="{StaticResource elevation-small}"/>
                 <Setter Property="CornerRadius" Value="20"/>
                 <Setter Property="Padding" Value="10"/>
@@ -90,7 +107,7 @@
                 <Setter Property="BackgroundColor" Value="{DynamicResource surface}"/>
             </Style>
 
-            <Style TargetType="yummy:PancakeView" BasedOn="{StaticResource card-small}" x:Key="card-entry">
+            <Style x:Key="card-entry" BasedOn="{StaticResource card-small}" TargetType="yummy:PancakeView">
                 <Setter Property="BackgroundColor" Value="{DynamicResource page-backgroud}"/>
                 <Setter Property="Border" Value="{StaticResource border-white}"/>
                 <Setter Property="Padding" Value="15, 10"/>
@@ -99,9 +116,10 @@
             </Style>
 
             <!-- #region Custom Control Styles-->
-            <Style TargetType="controls:BorderlessEntry" x:Key="custom-entry-borderless">
+            <Style x:Key="custom-entry-borderless" TargetType="controls:BorderlessEntry">
                 <Setter Property="FontFamily" Value="por"/>
                 <Setter Property="FontSize" Value="18"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
             </Style>
             <!-- #endregion Custom Control Styles-->
 
@@ -110,12 +128,12 @@
                 <Setter Property="VerticalScrollBarVisibility" Value="Never"/>
             </Style>
 
-            <Style TargetType="StackLayout" x:Key="wrapper-secondary-button">
+            <Style x:Key="wrapper-secondary-button" TargetType="StackLayout">
                 <Setter Property="Orientation" Value="Horizontal"/>
                 <Setter Property="Margin" Value="10"/>
             </Style>
 
-            <Style TargetType="StackLayout" x:Key="wrapper-borderless-entry">
+            <Style x:Key="wrapper-borderless-entry" TargetType="StackLayout">
                 <Setter Property="Orientation" Value="Horizontal"/>
                 <Setter Property="Spacing" Value="10"/>
             </Style>
